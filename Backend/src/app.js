@@ -20,6 +20,13 @@ const interviewRouter = require("./routes/interview.routes")
 app.use("/api/auth", authRouter)
 app.use("/api/interview", interviewRouter)
 
-
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Server is healthy",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+  });
+});
 
 module.exports = app
