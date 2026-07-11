@@ -2,9 +2,10 @@
 
 import axios from "axios"
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? "http://localhost:3000" : "https://prepai-backend-qwt3.onrender.com")
 
 const api = axios.create({
-    baseURL: "https://prepai-backend-qwt3.onrender.com",
+    baseURL: API_BASE_URL,
     withCredentials: true
 })
 

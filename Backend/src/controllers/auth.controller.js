@@ -3,6 +3,23 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const tokenBlacklistModel = require("../models/blacklist.model")
 
+const fallbackJwtSecret = "development-fallback-secret-change-me"
+const jwtSecret = process.env.JWT_SECRET || fallbackJwtSecret
+
+if (!process.env.JWT_SECRET) {
+    console.warn("JWT_SECRET is missing from the runtime environment. Falling back to a development-only secret.")
+}
+
+const isProductionLike = process.env.NODE_ENV === "production" || process.env.RENDER === "true"
+
+const cookieOptions = {
+    httpOnly: true,
+    path: "/",
+    sameSite: isProductionLike ? "none" : "lax",
+    secure: isProductionLike,
+    maxAge: 24 * 60 * 60 * 1000
+}
+
 /**
  * @name registerUserController
  * @description register a new user, expects username, email and password in the request body
@@ -38,11 +55,11 @@ async function registerUserController(req, res) {
 
     const token = jwt.sign(
         { id: user._id, username: user.username },
-        process.env.JWT_SECRET,
+        jwtSecret,
         { expiresIn: "1d" }
     )
 
-    res.cookie("token", token)
+    res.cookie("token", token, cookieOptions)
 
 
     res.status(201).json({
@@ -84,11 +101,11 @@ async function loginUserController(req, res) {
 
     const token = jwt.sign(
         { id: user._id, username: user.username },
-        process.env.JWT_SECRET,
+        jwtSecret,
         { expiresIn: "1d" }
     )
 
-    res.cookie("token", token)
+    res.cookie("token", token, cookieOptions)
     res.status(200).json({
         message: "User loggedIn successfully.",
         user: {
@@ -112,7 +129,12 @@ async function logoutUserController(req, res) {
         await tokenBlacklistModel.create({ token })
     }
 
-    res.clearCookie("token")
+    res.clearCookie("token", {
+        httpOnly: true,
+        path: "/",
+        sameSite: isProductionLike ? "none" : "lax",
+        secure: isProductionLike
+    })
 
     res.status(200).json({
         message: "User logged out successfully"
