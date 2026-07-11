@@ -1,6 +1,37 @@
 @import "tailwindcss";
 
 @theme {
+  /* Apricot UI palette: warm, bright surfaces with clear cocoa text. */
+  --color-zinc-950: #fff9f3;
+  --color-zinc-900: #fff1e3;
+  --color-zinc-850: #ffe4c4;
+  --color-zinc-800: #f7cf9d;
+  --color-zinc-700: #dfa968;
+  --color-zinc-600: #b8783e;
+  --color-zinc-500: #8b5b36;
+  --color-zinc-400: #6e482e;
+  --color-zinc-300: #56351f;
+  --color-zinc-200: #3d2516;
+  --color-zinc-150: #321b10;
+  --color-zinc-100: #2c170d;
+  --color-zinc-50: #241207;
+
+  --color-violet-950: #fff0dc;
+  --color-violet-900: #ffdfb1;
+  --color-violet-600: #f97316;
+  --color-violet-500: #fb923c;
+  --color-violet-400: #c2410c;
+  --color-violet-300: #9a3412;
+
+  --color-indigo-950: #fff3e9;
+  --color-indigo-900: #fed7aa;
+  --color-indigo-700: #ea580c;
+  --color-indigo-600: #f97316;
+  --color-indigo-500: #fb923c;
+  --color-indigo-400: #c2410c;
+
+  --color-purple-500: #f59e0b;
+  --color-purple-400: #b45309;
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
@@ -34,34 +65,34 @@
 }
 
 :root {
-  /* Default to a premium dark theme */
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
+  /* Warm apricot theme: light, inviting, and easy to scan. */
+  --background: 30 100% 97%;
+  --foreground: 20 49% 14%;
   
-  --card: 240 10% 6%;
-  --card-foreground: 0 0% 98%;
+  --card: 32 100% 98%;
+  --card-foreground: 20 49% 14%;
   
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
+  --popover: 32 100% 98%;
+  --popover-foreground: 20 49% 14%;
   
-  --primary: 263.4 70% 50.4%; /* Purple accent */
-  --primary-foreground: 210 20% 98%;
+  --primary: 24 94% 52%;
+  --primary-foreground: 32 100% 98%;
   
-  --secondary: 240 3.7% 15.9%;
-  --secondary-foreground: 0 0% 98%;
+  --secondary: 31 100% 93%;
+  --secondary-foreground: 20 49% 14%;
   
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
+  --muted: 31 100% 93%;
+  --muted-foreground: 24 31% 38%;
   
-  --accent: 263.4 70% 50.4%;
-  --accent-foreground: 0 0% 98%;
+  --accent: 38 92% 50%;
+  --accent-foreground: 20 49% 14%;
   
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 32 100% 98%;
   
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --ring: 263.4 70% 50.4%;
+  --border: 29 75% 82%;
+  --input: 31 100% 96%;
+  --ring: 24 94% 52%;
   
   --radius: 0.75rem;
 }
@@ -77,7 +108,10 @@
     padding: 0;
     width: 100%;
     min-height: 100vh;
-    background-color: hsl(var(--background));
+    background:
+      radial-gradient(circle at 8% 0%, rgba(251, 146, 60, 0.16), transparent 30%),
+      radial-gradient(circle at 94% 18%, rgba(245, 158, 11, 0.12), transparent 26%),
+      hsl(var(--background));
     color: hsl(var(--foreground));
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -106,32 +140,183 @@
 
 /* Glassmorphism utility classes */
 .glass-panel {
-  background: rgba(15, 15, 20, 0.65);
+  background: rgba(255, 253, 249, 0.82);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(234, 136, 54, 0.22);
+  box-shadow: 0 16px 42px -26px rgba(133, 69, 24, 0.36);
 }
 
 .glass-panel-hover:hover {
-  background: rgba(15, 15, 20, 0.8);
-  border-color: rgba(139, 92, 246, 0.3); /* Purple primary tint */
-  box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.15);
+  background: rgba(255, 250, 243, 0.96);
+  border-color: rgba(234, 136, 54, 0.5);
+  box-shadow: 0 20px 38px -24px rgba(154, 75, 17, 0.3);
+  transform: translateY(-3px);
 }
 
 /* Beautiful gradients */
 .text-gradient {
-  background: linear-gradient(135deg, #c084fc 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #ea580c 0%, #f59e0b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .bg-gradient-radial {
-  background-image: radial-gradient(circle at top, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
+  background-image: radial-gradient(circle at top, rgba(251, 146, 60, 0.28) 0%, transparent 60%);
 }
 
 .bg-gradient-dots {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(180, 83, 9, 0.13) 1px, transparent 1px);
   background-size: 24px 24px;
+}
+
+/* Existing utility classes get warm, accessible treatment without changing JSX logic. */
+.min-h-screen.bg-zinc-950 {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(251, 146, 60, 0.18), transparent 25%),
+    radial-gradient(circle at 88% 25%, rgba(251, 191, 36, 0.14), transparent 22%);
+}
+
+.text-white,
+.hover\:text-white:hover {
+  color: #3d2516;
+}
+
+.bg-white.text-zinc-950,
+a.bg-white.text-zinc-950,
+button.bg-white.text-zinc-950 {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+  color: #fffaf5;
+  box-shadow: 0 12px 24px -14px rgba(194, 65, 12, 0.7);
+}
+
+a.bg-white.text-zinc-950:hover,
+button.bg-white.text-zinc-950:hover {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+}
+
+/* Landing page motion: light, purposeful feedback without affecting page actions. */
+.landing-nav-enter {
+  animation: landing-nav-in 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.landing-hero__eyebrow,
+.landing-hero__title,
+.landing-hero__copy,
+.landing-hero__actions,
+.landing-hero__preview-enter {
+  animation: landing-rise-in 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.landing-hero__eyebrow {
+  animation-delay: 120ms;
+}
+
+.landing-hero__title {
+  animation-delay: 220ms;
+}
+
+.landing-hero__copy {
+  animation-delay: 340ms;
+}
+
+.landing-hero__actions {
+  animation-delay: 460ms;
+}
+
+.landing-hero__preview-enter {
+  animation-delay: 580ms;
+}
+
+.landing-hero__preview {
+  box-shadow: 0 24px 55px -34px rgba(154, 75, 17, 0.42);
+  animation: landing-preview-float 6s ease-in-out 1.3s infinite;
+}
+
+.landing-orb {
+  animation: landing-orb-drift 11s ease-in-out infinite alternate;
+}
+
+.landing-orb--right {
+  animation-delay: -5s;
+  animation-duration: 14s;
+}
+
+.landing-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+.landing-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.landing-reveal.is-visible.glass-panel-hover:hover {
+  transform: translateY(-3px);
+}
+
+@keyframes landing-nav-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -24px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+@keyframes landing-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landing-preview-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes landing-orb-drift {
+  from {
+    transform: translate3d(-10px, -4px, 0) scale(0.96);
+  }
+  to {
+    transform: translate3d(16px, 14px, 0) scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-nav-enter,
+  .landing-hero__eyebrow,
+  .landing-hero__title,
+  .landing-hero__copy,
+  .landing-hero__actions,
+  .landing-hero__preview-enter,
+  .landing-hero__preview,
+  .landing-orb {
+    animation: none;
+  }
+
+  .landing-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* Custom modern scrollbars */

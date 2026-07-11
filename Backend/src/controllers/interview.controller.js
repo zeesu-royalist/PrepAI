@@ -2,28 +2,71 @@ const pdfParse = require("pdf-parse")
 const { generateInterviewReport, generateResumePdf } = require("../services/ai.service")
 const interviewReportModel = require("../models/interviewReport.model")
 
+async function extractResumeText(file) {
+    if (!file?.buffer?.length) {
+        return ""
+    }
 
+    const fileBuffer = Buffer.from(file.buffer)
+    const originalName = String(file.originalname || "").toLowerCase()
+    const mimeType = String(file.mimetype || "")
 
+    try {
+        if (mimeType.includes("pdf") || originalName.endsWith(".pdf")) {
+            const parsedPdf = await pdfParse(fileBuffer)
+            return parsedPdf.text?.trim() || ""
+        }
+
+        if (mimeType.includes("word") || originalName.endsWith(".docx")) {
+            try {
+                const mammoth = require("mammoth")
+                const mammothResult = await mammoth.extractRawText({ buffer: fileBuffer })
+                return mammothResult.value?.trim() || ""
+            } catch {
+                return fileBuffer.toString("utf8").replace(/\u0000/g, "").trim()
+            }
+        }
+
+        return fileBuffer.toString("utf8").replace(/\u0000/g, "").trim()
+    } catch (error) {
+        console.warn("Resume extraction failed:", error.message)
+        return ""
+    }
+}
 
 /**
  * @description Controller to generate interview report based on user self description, resume and job description.
  */
 async function generateInterViewReportController(req, res) {
-
-    const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
     const { selfDescription, jobDescription } = req.body
+    const safeSelfDescription = String(selfDescription || "").trim()
+    const safeJobDescription = String(jobDescription || "").trim()
+
+    if (!safeJobDescription) {
+        return res.status(400).json({
+            message: "Please provide a job description."
+        })
+    }
+
+    if (!req.file && !safeSelfDescription) {
+        return res.status(400).json({
+            message: "Please upload a resume or provide a self-description."
+        })
+    }
+
+    const resumeContent = await extractResumeText(req.file)
 
     const interViewReportByAi = await generateInterviewReport({
-        resume: resumeContent.text,
-        selfDescription,
-        jobDescription
+        resume: resumeContent,
+        selfDescription: safeSelfDescription,
+        jobDescription: safeJobDescription
     })
 
     const interviewReport = await interviewReportModel.create({
         user: req.user.id,
-        resume: resumeContent.text,
-        selfDescription,
-        jobDescription,
+        resume: resumeContent,
+        selfDescription: safeSelfDescription,
+        jobDescription: safeJobDescription,
         ...interViewReportByAi
     })
 

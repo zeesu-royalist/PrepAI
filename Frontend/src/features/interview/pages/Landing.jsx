@@ -1,4 +1,5 @@
 import React from 'react'
+import { useState } from "react";
 import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../../auth/hooks/useAuth'
 import {
@@ -11,12 +12,15 @@ import {
   TrendingUp,
   Briefcase,
   ArrowUpRight,
-  ShieldCheck
+  ShieldCheck,
+  Menu,
+  X
 } from 'lucide-react'
 
 const Landing = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-zinc-950 text-zinc-50 overflow-hidden font-sans">
@@ -28,56 +32,155 @@ const Landing = () => {
       {/* Grid Pattern overlay */}
       <div className="absolute inset-0 bg-gradient-dots opacity-40 pointer-events-none z-0" />
 
-      {/* Navbar */}
-      <header className="relative z-10 border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg shadow-violet-500/20">
-              <Brain className="h-5 w-5 text-white" />
+      <header className="fixed top-4 left-1/2 z-50 w-[96%] max-w-7xl -translate-x-1/2 overflow-hidden rounded-2xl border border-white/15 bg-white/[0.08] shadow-[0_4px_15px_rgba(0,0,0,0.20)] backdrop-blur-3xl before:absolute before:inset-0 before:pointer-events-none before:bg-gradient-to-b before:from-white/10 before:to-transparent">
+        <div className="relative z-10 flex h-16 items-center justify-between px-4 sm:px-6">
+
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <div className="leading-none">
+              <h1 className="bg-gradient-to-r from-white via-zinc-100 to-zinc-400 bg-clip-text text-lg sm:text-xl font-extrabold tracking-tight text-transparent">
+                PrepAI
+              </h1>
+
+              <p className="mt-1 hidden text-[10px] uppercase tracking-[0.15em] text-zinc-400 sm:block">
+                AI Interview Coach
+              </p>
             </div>
-            <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-              PrepAI
-            </span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
-            <a href="#features" className="hover:text-white transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-white transition-colors">How it Works</a>
-            <a href="#stats" className="hover:text-white transition-colors">Success Rates</a>
+          {/* Desktop Navigation */}
+          <nav className="hidden items-center lg:flex">
+            {[
+              ["Features", "#features"],
+              ["How it Works", "#how-it-works"],
+              ["Success Rates", "#stats"],
+            ].map(([title, href]) => (
+              <a
+                key={title}
+                href={href}
+                className="rounded-full px-4 py-2 text-sm font-medium text-zinc-300 transition-all duration-300 hover:bg-white/10 hover:text-white"
+              >
+                {title}
+              </a>
+            ))}
           </nav>
 
-          <div className="flex items-center gap-4">
+          {/* Desktop Right */}
+          <div className="hidden items-center gap-4 lg:flex">
             {user ? (
               <button
-                onClick={() => navigate('/dashboard')}
-                className="group inline-flex items-center justify-center gap-1.5 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-semibold text-zinc-200 border border-zinc-800 hover:bg-zinc-800 hover:text-white transition-all shadow-sm"
+                onClick={() => navigate("/dashboard")}
+                className="group inline-flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900 px-5 py-2 text-sm font-semibold text-zinc-200 shadow-lg shadow-black/10 transition-all duration-300 hover:border-zinc-500 hover:bg-zinc-800 hover:text-white"
               >
                 Go to Dashboard
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             ) : (
               <>
                 <Link
                   to="/login"
-                  className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+                  className="text-sm font-medium text-zinc-300 transition-colors hover:text-white"
                 >
                   Sign In
                 </Link>
+
                 <Link
                   to="/register"
-                  className="inline-flex items-center justify-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition-colors shadow-sm"
+                  className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/10 px-5 py-2 text-sm font-semibold text-white backdrop-blur-xl transition-all duration-300 hover:border-white/30 hover:bg-white/20"
                 >
                   Get Started
                 </Link>
               </>
             )}
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="rounded-lg p-2 text-white transition hover:bg-white/10 lg:hidden"
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <div
+          className={`overflow-hidden transition-all duration-300 lg:hidden ${mobileMenuOpen
+            ? "max-h-[500px] border-t border-white/10"
+            : "max-h-0"
+            }`}
+        >
+          <div className="space-y-2 px-4 py-4">
+
+            <a
+              href="#features"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block rounded-lg px-4 py-3 text-zinc-300 hover:bg-white/10 hover:text-white"
+            >
+              Features
+            </a>
+
+            <a
+              href="#how-it-works"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block rounded-lg px-4 py-3 text-zinc-300 hover:bg-white/10 hover:text-white"
+            >
+              How it Works
+            </a>
+
+            <a
+              href="#stats"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block rounded-lg px-4 py-3 text-zinc-300 hover:bg-white/10 hover:text-white"
+            >
+              Success Rates
+            </a>
+
+            <div className="pt-3">
+              {user ? (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    navigate("/dashboard");
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900 px-5 py-3 font-semibold text-zinc-200 transition hover:bg-zinc-800"
+                >
+                  Go to Dashboard
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              ) : (
+                <div className="space-y-3">
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-center text-zinc-300 hover:bg-white/10 hover:text-white"
+                  >
+                    Sign In
+                  </Link>
+
+                  <Link
+                    to="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-center font-semibold text-white backdrop-blur-xl hover:bg-white/20"
+                  >
+                    Get Started
+                  </Link>
+                </div>
+              )}
+            </div>
+
+          </div>
         </div>
       </header>
 
       {/* Hero Section */}
       <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 md:pt-32 md:pb-24 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 text-xs font-medium mb-6 shadow-inner animate-pulse">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 mt-10 md:mt-4 lg:mt-0 text-xs font-medium mb-6 shadow-inner animate-pulse">
           <Sparkles className="h-3.5 w-3.5" />
           <span>Next-Gen AI Interview Preparation</span>
         </div>
@@ -118,51 +221,80 @@ const Landing = () => {
         </div>
 
         {/* Platform Preview Mockup */}
-        <div className="relative mx-auto max-w-5xl rounded-2xl border border-zinc-800/85 glass-panel p-2 shadow-2xl shadow-violet-950/20">
-          <div className="rounded-xl overflow-hidden border border-zinc-800/50 bg-zinc-900/50 aspect-[16/10] flex flex-col">
-            {/* Window bar */}
-            <div className="bg-zinc-950/60 px-4 py-3 border-b border-zinc-800/80 flex items-center justify-between">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                <div className="w-3 h-3 rounded-full bg-green-500/60" />
-              </div>
-              <div className="text-xs text-zinc-500 font-medium font-mono select-none">prepai.ai/dashboard</div>
-              <div className="w-12" />
-            </div>
+        {/* Inside Window Mockup */}
+        <div className="flex h-full overflow-hidden rounded-2xl bg-zinc-950/40 text-left">
 
-            {/* Inside Window Mockup */}
-            <div className="flex-1 p-6 flex flex-col md:flex-row gap-6 text-left overflow-hidden select-none">
-              <div className="flex-1 space-y-4">
-                <div className="h-8 w-48 rounded bg-zinc-800/80" />
-                <div className="h-4 w-72 rounded bg-zinc-800/40" />
+          {/* Sidebar */}
+          <div className="hidden md:flex w-14 flex-col items-center gap-3 border-r border-zinc-800 py-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className={`h-8 w-8 rounded-lg ${i === 1 ? "bg-violet-500/40" : "bg-zinc-800"
+                  }`}
+              />
+            ))}
+          </div>
 
-                <div className="grid grid-cols-2 gap-4 pt-4">
-                  <div className="border border-zinc-800/80 rounded-lg p-4 space-y-3 bg-zinc-950/40">
-                    <div className="h-4 w-28 rounded bg-zinc-800/80" />
-                    <div className="h-16 w-full rounded bg-zinc-800/30" />
-                  </div>
-                  <div className="border border-zinc-800/80 rounded-lg p-4 space-y-3 bg-zinc-950/40">
-                    <div className="h-4 w-24 rounded bg-zinc-800/80" />
-                    <div className="h-10 w-full rounded bg-zinc-800/30" />
-                    <div className="h-4 w-12 rounded bg-zinc-800/50" />
-                  </div>
-                </div>
+          {/* Content */}
+          <div className="flex-1 p-4 md:p-6 space-y-5">
+
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <div className="h-6 w-40 rounded bg-zinc-800" />
+                <div className="mt-2 h-3 w-56 rounded bg-zinc-700/60" />
               </div>
 
-              <div className="w-full md:w-64 border border-zinc-800/80 rounded-xl p-4 bg-zinc-950/60 space-y-4 flex flex-col items-center justify-center text-center">
-                <div className="text-xs text-zinc-500 font-bold uppercase tracking-wider">Target Match Score</div>
-                <div className="relative flex items-center justify-center">
-                  <div className="w-24 h-24 rounded-full border-4 border-zinc-800 flex items-center justify-center">
-                    <span className="text-2xl font-extrabold text-violet-400">87%</span>
-                  </div>
-                </div>
-                <div className="space-y-1.5 w-full">
-                  <div className="h-3 w-2/3 rounded bg-zinc-800/80 mx-auto" />
-                  <div className="h-2 w-1/2 rounded bg-zinc-800/40 mx-auto" />
-                </div>
+              <div className="flex items-center gap-3">
+                <div className="h-9 w-28 rounded-xl bg-zinc-800" />
+                <div className="h-9 w-9 rounded-full bg-violet-500/30" />
               </div>
             </div>
+
+            {/* Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-4"
+                >
+                  <div className="h-3 w-16 rounded bg-zinc-700" />
+                  <div className="mt-3 h-6 w-10 rounded bg-violet-500/40" />
+                  <div className="mt-3 h-2 w-full rounded bg-zinc-800" />
+                </div>
+              ))}
+            </div>
+
+            {/* Chart + Score */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+              {/* Chart */}
+              <div className="lg:col-span-2 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4">
+                <div className="mb-4 h-3 w-28 rounded bg-zinc-700" />
+
+                <div className="flex h-28 items-end gap-2">
+                  {[45, 70, 35, 90, 60, 75].map((h) => (
+                    <div
+                      key={h}
+                      style={{ height: `${h}%` }}
+                      className="flex-1 rounded-t-lg bg-gradient-to-t from-violet-600/80 to-fuchsia-400/70"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Score */}
+              <div className="flex flex-col items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/60 p-5">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-violet-500/40">
+                  <span className="text-xl font-bold text-violet-400">87%</span>
+                </div>
+
+                <div className="mt-4 h-3 w-20 rounded bg-zinc-700" />
+                <div className="mt-2 h-2 w-14 rounded bg-zinc-800" />
+              </div>
+
+            </div>
+
           </div>
         </div>
       </section>

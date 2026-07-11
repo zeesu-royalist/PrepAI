@@ -1,3 +1,5 @@
+// 1st page of 4tier architecture.
+
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
@@ -10,13 +12,13 @@ const Register = () => {
     const [password, setPassword] = useState("")
     const [errorMsg, setErrorMsg] = useState("")
 
-    const { loading, handleRegister } = useAuth()
+    const { loading, handleRegister } = useAuth()  // 2nd pages is here.
     
     const handleSubmit = async (e) => {
         e.preventDefault()
         setErrorMsg("")
         try {
-            await handleRegister({ username, email, password })
+            await handleRegister({ username, email, password })  // 2nd pages is here.
             navigate("/dashboard")
         } catch (err) {
             setErrorMsg("Registration failed. Please check your details and try again.")

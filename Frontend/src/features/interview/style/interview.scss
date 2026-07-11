@@ -1,18 +1,18 @@
 // ── Shared Variables (mirrors home.scss theme) ────────────────────────────────
-$bg-page: #0d1117;
-$bg-card: #161b22;
-$bg-panel: #1c2230;
-$bg-input: #1e2535;
-$border-color: #2a3348;
-$text-primary: #e6edf3;
-$text-muted: #7d8590;
-$accent: #ff2d78;
+$bg-page: #fff9f3;
+$bg-card: #fffdf9;
+$bg-panel: #fff1e3;
+$bg-input: #fff7ed;
+$border-color: #f7cf9d;
+$text-primary: #3d2516;
+$text-muted: #8b5b36;
+$accent: #f97316;
 $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
 // severity palette
-$severity-high: #ff4d4d;
-$severity-medium: #f5a623;
-$severity-low: #3fb950;
+$severity-high: #e11d48;
+$severity-medium: #d97706;
+$severity-low: #15803d;
 
 *::-webkit-scrollbar {
     display: none;
@@ -249,15 +249,15 @@ $severity-low: #3fb950;
         width: fit-content;
 
         &--intention {
-            color: #a78bfa;
-            background-color: rgba(#a78bfa, 0.1);
-            border: 1px solid rgba(#a78bfa, 0.2);
+            color: #c2410c;
+            background-color: rgba(#fb923c, 0.12);
+            border: 1px solid rgba(#fb923c, 0.3);
         }
 
         &--answer {
-            color: #3fb950;
-            background-color: rgba(#3fb950, 0.1);
-            border: 1px solid rgba(#3fb950, 0.2);
+            color: #15803d;
+            background-color: rgba(#22c55e, 0.1);
+            border: 1px solid rgba(#22c55e, 0.2);
         }
     }
 }
