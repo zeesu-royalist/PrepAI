@@ -16,7 +16,13 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: (origin, callback) => {
-        const isAllowed = !origin || allowedOrigins.includes(origin) || /^https:\/\/prep-ai-frontend-[a-z0-9-]+\.vercel\.app$/.test(origin)
+        const isAllowed =
+            !origin ||
+            allowedOrigins.includes(origin) ||
+            // Vercel deployments
+            /^https:\/\/prep-ai-frontend-[a-z0-9-]+\.vercel\.app$/.test(origin) ||
+            // Render deployments
+            /^https:\/\/prepai-frontend-[a-z0-9-]+\.onrender\.com$/.test(origin)
 
         if (isAllowed) {
             callback(null, true)
