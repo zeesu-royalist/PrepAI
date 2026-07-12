@@ -57,16 +57,12 @@ export const useAuth = () => {
     useEffect(() => {
 
         const getAndSetUser = async () => {
-            const hasAuthCookie = document.cookie
-                .split(";")
-                .some((cookie) => cookie.trim().startsWith("token="))
-
-            if (!hasAuthCookie) {
-                setUser(null)
-                setLoading(false)
-                return
-            }
-
+            // NOTE: Do NOT use document.cookie to check for the token.
+            // The backend sets the cookie as httpOnly:true (for XSS protection),
+            // which makes it completely invisible to JavaScript's document.cookie.
+            // Always call getMe() and let the server decide:
+            //   - 200 → user is authenticated, set user state
+            //   - 401 → cookie missing/invalid, set user to null
             try {
                 const data = await getMe()
                 setUser(data?.user ?? null)
